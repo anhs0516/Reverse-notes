@@ -221,3 +221,28 @@ VA(Virtual Address 절대주소x ) : 메모리에서 섹션의 시작위치
 <공식>
 RAW = RVA - VA(메모리 시작지점(ImageBase - VA)) + PointerToRawData
 
+
+## 🛠️ 5. 실습 예시 (PE-Bear 사용)
+
+> 분석 대상: `music_player.exe`  
+> 툴: [PE-Bear](https://github.com/hasherezade/pe-bear)
+
+### 확인 정보:
+
+| 항목 | 값 |
+|------|----|
+| ImageBase | 0x00400000 |
+| AddressOfEntryPoint | 0x00001000 |
+| EntryPoint (VA) | `0x00400000 + 0x00001000 = 0x00401000` |
+| .text RVA | 0x1000 |
+
+→ **디버거에서 이 주소부터 실행되므로 브레이크포인트 걸기 용이**
+
+
+## 🧠 6. 요약
+
+- PE 구조는 리버싱 시 EntryPoint, Import Table 등 실전 분석의 출발점
+- `ImageBase + RVA = VA` 공식을 이해해야 분석 위치를 정확히 지정할 수 있다.
+- PE-Bear, PE View 등으로 구조 확인 연습 필수
+
+

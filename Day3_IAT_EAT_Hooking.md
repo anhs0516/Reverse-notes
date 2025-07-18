@@ -112,3 +112,57 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
                 →→ FirstThunk (IAT)에 기록
 
 ```
+
+## 📌 EAT vs IAT
+✅ 장점:
+
+IAT: 외부 DLL 사용자가 import할 때
+EAT: DLL이 외부에 export할 때
+
+📘 보완 정리:
+
+
+| 항목     | EAT                                  | IAT                                    |
+|----------|---------------------------------------|-----------------------------------------|
+| 목적     | DLL이 다른 모듈에 제공하는 함수 목록   | 실행 파일이 외부 DLL에서 호출하는 함수 |
+| 위치     | Export Directory                      | Import Directory                        |
+| 사용 시기| API 제공자(DLL 측)                    | API 사용자(EXE 측)                     |
+| 수정 여부| 불변 (DLL 내부 고정)                  | 실행 중 OS에 의해 API 주소로 덮어쓰기 |
+
+
+## 🧩 API Hooking 기초
+
+| 항목          | 설명                                       |
+| ----------- | ---------------------------------------- |
+| API Hooking | IAT나 EAT를 조작해, 특정 API 함수의 실행을 가로채는 기술    |
+| 사용 목적       | 악성코드 탐지 우회, 함수 동작 분석, 디버깅, DLL Injection |
+
+### 🔧 방법 1: IAT Hooking
+- IAT에 있는 함수 포인터를 후킹 대상 함수 주소로 교체
+  
+FirstThunk의 항목을 조작
+원래 주소 대신 내가 만든 함수 주소로 변경
+모든 call [IAT] 호출이 내가 만든 함수로 연결됨
+
+```
+DWORD* IATEntry = (DWORD*)(ModuleBase + RVA_of_FirstThunk);
+*IATEntry = (DWORD)MyHookFunction;
+```
+
+
+### 🔧 방법 2: Inline Hooking
+- 원래 함수의 시작 주소에 JMP 명령어로 후킹 대상 함수로 점프
+
+
+API 함수 진입 지점에 JMP 명령 삽입
+원래 명령은 다른 위치에 백업
+실행 흐름을 내가 만든 함수로 유도
+
+```
+Original: 55 8B EC    ; push ebp / mov ebp, esp
+Hooked:   E9 XX XX XX XX ; JMP my_hook_func
+```
+
+
+### 3. EAT Hooking (비교적 드묾)
+   - DLL이 Export하는 함수 주소를 변경

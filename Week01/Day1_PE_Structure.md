@@ -5,7 +5,7 @@
 
 - 윈도우에서 실행되는 모든 EXE, DLL 파일은 PE 형식을 따른다.
 - 구조는 아래와 같이 구성됨
-
+```
 ┌─────────────┐
 │ DOS Header │ (MZ) - 64바이트
 ├─────────────┤
@@ -15,14 +15,15 @@
 ├─────────────┤
 │ 실제 섹션들 │
 └─────────────┘
+```
 
 ## 2. 주요 구조 설명
 
-###[1] DOS Header ('MZ')
+### [1] DOS Header ('MZ')
 - 실행 실패 시 메시지 출력용
 - 'e_lfanew' : PE header의 오프셋 주소를 가리킴 (중요!)
 
-###[2] NT Header (`PE\0\0`)
+### [2] NT Header (`PE\0\0`)
 - PE Signature + FileHeader + OptionalHeader 로 구성됨
 
 #### NT Header 세부

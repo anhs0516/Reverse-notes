@@ -51,10 +51,112 @@ Calling Convention은 함수 호출 시 **인자 전달 방식**, **스택 정�
 |-------------|-----------|----------------|------------------|
 | `cdecl`     | 오른쪽 → 왼쪽 (스택) | 호출자(caller) | C 언어 기본 방식 |
 | `stdcall`   | 오른쪽 → 왼쪽 (스택) | 피호출자(callee) | WinAPI 대부분 |
-| `fastcall`  | 일부 인자를 레지스터(ECX, EDX)로 전달 | 피호출자 | 속도 최적화용 |
+| `fastcall`  | 왼쪽 -> 오른쪽 일부 인자를 레지스터(ECX, EDX)로 전달 | 피호출자 | 속도 최적화용 |
 | `thiscall`  | 클래스 멤버 함수, `this` → ECX | 피호출자 | C++ 객체 지향에서 사용 |
 | `ms64`      | RCX, RDX, R8, R9 → 레지스터 전달 | 호출자 | x64 Windows 환경 |
 ---
+
+
+### 각 Calling Convention 예시
+
+✅ cdecl (C Declaration)
+인자 전달: 오른쪽에서 왼쪽 순서로 스택에 push
+
+스택 정리: **호출자(caller)**가 한다
+
+주로 사용되는 곳: C언어 기본 규약
+
+
+```c
+int sum(int a, int b) {
+    return a + b;
+}
+
+int main() {
+    sum(1, 2);
+}
+
+```
+
+```
+; 어셈블리 (Visual Studio)
+push 2            ; b
+push 1            ; a
+call sum
+add esp, 8        ; caller가 인자 정리
+```
+
+
+✅ stdcall (Standard Call)
+인자 전달: 오른쪽에서 왼쪽 순서로 스택에 push
+
+스택 정리: **피호출자(callee)**가 한다
+
+주로 사용되는 곳: Windows API
+
+```c
+
+__stdcall int sum(int a, int b);
+
+push 2
+push 1
+call sum         ; sum 함수 내부에서 ret 8 수행
+; 호출자는 스택을 정리하지 않음
+
+```
+
+```
+sum:
+    mov eax, [esp+4] ; a
+    add eax, [esp+8] ; b
+    ret 8            ; 인자 8바이트 정리
+
+```
+
+✅ fastcall
+인자 전달: 첫 번째와 두 번째 인자를 **레지스터(ecx, edx)**로 전달, 나머지는 스택
+
+스택 정리: callee
+
+주로 사용되는 곳: 마이크로소프트 컴파일러 최적화
+
+```c
+
+__fastcall int sum(int a, int b, int c);
+
+mov ecx, 1
+mov edx, 2
+push 3             ; 세 번째 인자
+call sum
+; sum 내부에서 ret 4 수행
+
+```
+
+
+✅ thiscall
+인자 전달: C++ 클래스 멤버 함수에서 this 포인터를 ecx 레지스터에 전달
+
+스택 정리: callee
+
+주로 사용되는 곳: C++ 클래스 메서드
+
+```c
+class A {
+public:
+    int add(int x) {
+        return this->val + x;
+    }
+};
+
+```
+
+```
+mov ecx, this      ; ecx에 this 포인터 저장
+push x
+call A::add
+; callee가 ret 4 수행
+
+```
 
 
 ## 🔧 실습 예제

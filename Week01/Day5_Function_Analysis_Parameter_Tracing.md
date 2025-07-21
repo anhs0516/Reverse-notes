@@ -12,9 +12,9 @@
 
 ### 1. 함수 내부 기본 구조
 
-- 함수 시작: prologue (`push ebp`, `mov ebp, esp`)
+- 함수 시작: (`push ebp`, `mov ebp, esp`)
 - 지역 변수 공간 확보: `sub esp, xx`
-- 함수 종료: epilogue (`mov esp, ebp`, `pop ebp`, `ret`)
+- 함수 종료: (`mov esp, ebp`, `pop ebp`, `ret`)
 
 ### 2. 파라미터 전달 방식에 따른 분석
 

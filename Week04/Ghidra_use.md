@@ -28,3 +28,9 @@ Dreamhack Ghidra 설치 페이지를 따라하시면 다운로드 할 수 있습
 더블 클릭 후 " Yes " 를 클릭해주면 아래와 같이 분석을 진행할 수 있습니다.
 
 <img width="984" height="586" alt="image" src="https://github.com/user-attachments/assets/93f203d8-f5ec-4be3-96ac-af2632cfa152" />
+
+분석을 클릭하게 되면 아래와 같이 창이 보입니다.
+
+<img width="2553" height="1399" alt="image" src="https://github.com/user-attachments/assets/a27b0c70-24e7-470c-b4f2-cf597d45204a" />
+
+

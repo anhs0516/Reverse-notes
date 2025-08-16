@@ -34,3 +34,15 @@ Dreamhack Ghidra 설치 페이지를 따라하시면 다운로드 할 수 있습
 <img width="2553" height="1399" alt="image" src="https://github.com/user-attachments/assets/a27b0c70-24e7-470c-b4f2-cf597d45204a" />
 
 
+- 그래프보기
+도구 모음에서 Display Function Graph를 클릭하면 IDA에서 보는 Graph 형식과 동일하게 보입니다.
+
+<img width="1010" height="1069" alt="image" src="https://github.com/user-attachments/assets/0dc25e85-5af6-40f6-b1d9-494fdbc2f778" />
+
+- 문자열 추출
+
+<img width="2541" height="1049" alt="image" src="https://github.com/user-attachments/assets/1bb73eaf-f734-4452-bc18-f2d12b0247ae" />
+
+
+
+중요하다고 판단되는 기능들이 생기면 점차 추가하도록 하겠습니다.
